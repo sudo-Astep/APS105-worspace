@@ -4,13 +4,13 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
-../src/SortingAlgorithms.c 
+../src/SearchingAlgorithms.c 
 
 OBJS += \
-./src/SortingAlgorithms.o 
+./src/SearchingAlgorithms.o 
 
 C_DEPS += \
-./src/SortingAlgorithms.d 
+./src/SearchingAlgorithms.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes

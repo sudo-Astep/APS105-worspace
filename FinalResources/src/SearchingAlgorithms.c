@@ -1,21 +1,26 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <stdbool.h>
 
 /*
- * SortingAlgorithms.c
+ * SearchingAlgorithms.c
  *
- * Implementations of various sorting algorithms:
- * 		- Bubble Sort
- * 		- Insertion Sort
- * 		- Selection Sort
- * 		- Quick Sort
- * 		- Merge Sort
+ * Implementation of searching algorithms:
+ * 		- Linear Search
+ * 		- Binary Search
+ *
+ * 			***NOTE***
+ * Binary search requires that the list first be sorted. Here I use quick sort
+ * beacuse it's my favorite. Others can also be used and the code can be changed
+ * easily enough to reflect that.
  *
  *  Created on: Apr 27, 2021
  *      Author: ace
  */
 
+bool linearSearch (int[], int, int);
+bool binarySearch (int[], int, int, int);
 void bubbleSort(int[], int);
 void insertionSort(int[], int);
 void selectionSort(int[], int);
@@ -36,7 +41,8 @@ int main ()
 
 	int n = 0;
 	int maxNum = 10;
-	char sort;
+	char search;
+	int key;
 
 	printf ("Enter the number of elements in the array: ");
 	scanf("%d", &n);
@@ -46,7 +52,7 @@ int main ()
 
 	int numbers[n];
 
-	printf ("Unsorted array:\n");
+	printf ("Array:\n");
 
 	for (int i = 0; i < n; i++)
 	{
@@ -55,29 +61,27 @@ int main ()
 	}
 	printf ("\n\n");
 
-	printf ("What sorting algorithm should I use (lower case first letter of the name):");
-	scanf(" %c", &sort);
+	printf ("What searching method to use (first letter of the name in lower case): ");
+	scanf (" %c", &search);
 
-	switch (sort)
+	printf ("Number to find: ");
+	scanf ("%d", &key);
+
+	switch (search)
 	{
 		case 'b':
-			bubbleSort(numbers, n);
+			quickSort (numbers, 0, n - 1); // IF YOU WANT TO CHANGE THE SORTING ALGORITHM, JUST CHANGE THIS LINE, ALL THE ALGORITHMS ARE IN THE FILE ALREADY
+			if (binarySearch(numbers, key, 0, n - 1))
+				printf ("The number %d is in the array!", key);
+			else
+				printf ("The number %d is not in the array", key);
 			break;
 
-		case 's':
-			selectionSort (numbers, n);
-			break;
-
-		case 'q':
-			quickSort (numbers, 0, n - 1);
-			break;
-
-		case 'i':
-			insertionSort (numbers, n);
-			break;
-
-		case 'm':
-			mergeSort (numbers, 0, n - 1);
+		case 'l':
+			if (linearSearch(numbers, n, key))
+							printf ("The number %d is in the array!", key);
+						else
+							printf ("The number %d is not in the array", key);
 			break;
 
 		default:
@@ -85,16 +89,43 @@ int main ()
 			return 1;
 	}
 
-	printf ("Sorted array:\n");
-	for(int i = 0; i < n; i++)
-	{
-		printf ("%d ", numbers[i]);
-	}
-
-	printf ("\n\n");
 
 	return 0;
 }
+
+bool linearSearch (int numbers[], int n, int key)
+{
+	for (int i = 0; i < n; i++)
+	{
+		if (numbers[i] == key)
+			return true;
+	}
+
+	return false;
+}
+
+bool binarySearch (int numbers[], int key, int low, int high)
+{
+	int mid = low + (high-low)/2;
+
+	if (low == high && numbers[low] != key)
+		return false;
+
+	if (numbers[mid] == key)
+		return true;
+
+	if (numbers[mid] < key)
+	{
+		return binarySearch(numbers, key, mid + 1, high);
+	}
+	else if (numbers[mid] > key)
+	{
+		return binarySearch (numbers, key, low, mid - 1);
+	}
+
+	return false;
+}
+
 
 void bubbleSort(int numbers[], int n)
 {
@@ -255,6 +286,14 @@ int partition (int numbers[], int low, int high)
 
 	return i + 1;
 }
+
+
+
+
+
+
+
+
 
 
 
